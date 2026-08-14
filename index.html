@@ -148,6 +148,23 @@
   <canvas id="c"></canvas>
 
   <div id="overlay">
+
+    <img
+      id="menu-duck"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSzLat8NClhw7vyY0uuCSUUWuwirKgbW1cP7LfErNL_A&s=10"
+      alt="Duck"
+      style="
+        position:absolute;
+        top:12px;
+        left:12px;
+        width:70px;
+        height:70px;
+        object-fit:contain;
+        pointer-events:none;
+        z-index:10;
+      "
+    >
+
     <h1 id="ol-title">SPACE IMPACT</h1>
     <h1 id="ol-title">TESTING </h1>
     <div class="big-score" id="ol-score" style="display:none"></div>
@@ -513,6 +530,8 @@ let spawnTimer = 0, spawnRate = 80;
 let levelScore = 0, levelTarget = 200;
 
 function startGame() {
+  document.getElementById('menu-duck').style.display = 'none';
+
   score = 0; lives = 3; level = 1;
   levelScore = 0; levelTarget = 200;
   player = makePlayer();
@@ -523,7 +542,6 @@ function startGame() {
   overlay.classList.add('hidden');
   updateHUD();
 }
-
 function respawn() {
   player = makePlayer();
   player.invincible = 120;
@@ -540,13 +558,18 @@ function updateHUD() {
 }
 
 function playerDied() {
+  document.getElementById('menu-duck').style.display = 'none';
+
   explode(player.x + player.w / 2, player.y + player.h / 2, 40, '#00eeff');
   lives--;
   updateHUD();
+
   if (lives <= 0) {
     if (score > hiScore) hiScore = score;
+
     state = 'gameover';
     overlay.classList.remove('hidden');
+
     olTitle.textContent = 'GAME OVER';
     olScore.style.display = 'block';
     olScore.textContent = `SCORE: ${score}  HI: ${hiScore}`;
@@ -555,6 +578,7 @@ function playerDied() {
   } else {
     state = 'dead';
     overlay.classList.remove('hidden');
+
     olTitle.textContent = 'SHIP LOST';
     olScore.style.display = 'block';
     olScore.textContent = `LIVES: ${'♥'.repeat(lives)}`;
@@ -562,7 +586,6 @@ function playerDied() {
     olPress.textContent = 'PRESS SPACE TO CONTINUE';
   }
 }
-
 function update() {
   frame++;
 
@@ -738,12 +761,13 @@ function draw() {
 
 // ─── Menu screen ───
 function showMenu() {
+  document.getElementById('menu-duck').style.display = 'block';
+
   olTitle.textContent = 'SPACE IMPACT - NEW';
   olScore.style.display = 'none';
   olBody.innerHTML = 'ARROW KEYS — move<br>SPACE — fire<br><br>Collect power-ups!<br>Survive as long as you can!';
   olPress.textContent = 'PRESS SPACE TO START';
 }
-
 // ─── Loop ───
 initStars();
 showMenu();
