@@ -419,7 +419,11 @@ function spawnEnemy() {
 function drawEnemy(e) {
   const x = Math.round(e.x), y = Math.round(e.y);
   const flash = e.hitFlash > 0;
-  const col = flash ? '#ffffff' : e.color;
+  const col = flash
+  ? '#ffffff'
+  : e.powerupCarrier
+    ? '#cc66ff'
+    : e.color;
 
   ctx.fillStyle = col;
   if (e.id === 'scout') {
